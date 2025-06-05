@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 public class Fire {
     /**
      * Returns how long it takes for all vulnerable trees to be set on fire if a
@@ -38,6 +43,54 @@ public class Fire {
     public static int timeToBurn(char[][] forest, int matchR, int matchC) {
         // HINT: when adding to your BFS queue, you can include more information than
         // just a location. What other information might be useful?
-        return -1;
+        boolean[][] visited = new boolean[forest.length][forest[matchR].length];
+        int time = 0;
+        Queue<int[]> queue = new LinkedList<>();
+        int[] start = {matchR, matchC};
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int rounds = queue.size();
+            for (int i = 0; i < rounds; i++) {
+                int[] current = queue.poll();
+                List<int[]> nearby = findAdjacentTrees(forest, visited, current);
+                queue.addAll(nearby);
+            }
+            time++;
+            System.out.println(time);
+            System.out.println(queue);
+        }
+
+        return time;
+    }
+
+    public static List<int[]> findAdjacentTrees(char[][] forest, boolean[][] visited, int[] current) {
+        List<int[]> adjacentTrees = new ArrayList<>();
+        int row = current[0];
+        int col = current[1];
+
+
+        int[][] directions = {
+                {1, 0},
+                {-1, 0},
+                {0, -1},
+                {0, 1}
+        };
+        
+        for (int[] direction : directions) {
+            int newR = row + direction[0];
+            int newC = col + direction[1];
+
+            if (newR > 0  || newR < forest.length || 
+                newC > 0 ||  newC < forest[row].length ||
+                visited[newR][newC] == false ||
+                forest[newR][newC] == 't') {
+                    int[] tree = {newR, newC};
+                    adjacentTrees.add(tree);
+                    visited[newR][newC] = true;
+                };
+            };
+        
+        return adjacentTrees;   
     }
 }

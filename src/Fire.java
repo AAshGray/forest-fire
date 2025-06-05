@@ -56,7 +56,7 @@ public class Fire {
                 List<int[]> nearby = findAdjacentTrees(forest, visited, current);
                 queue.addAll(nearby);
             }
-            time++;
+            if(!queue.isEmpty()) time++;
             System.out.println(time);
             System.out.println(queue);
         }
@@ -81,9 +81,9 @@ public class Fire {
             int newR = row + direction[0];
             int newC = col + direction[1];
 
-            if (newR > 0  || newR < forest.length || 
-                newC > 0 ||  newC < forest[row].length ||
-                visited[newR][newC] == false ||
+            if (newR >= 0  && newR < forest.length && 
+                newC >= 0 &&  newC < forest[row].length &&
+                visited[newR][newC] == false &&
                 forest[newR][newC] == 't') {
                     int[] tree = {newR, newC};
                     adjacentTrees.add(tree);

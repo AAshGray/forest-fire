@@ -44,33 +44,38 @@ public class Fire {
         // HINT: when adding to your BFS queue, you can include more information than
         // just a location. What other information might be useful?
         boolean[][] visited = new boolean[forest.length][forest[matchR].length];
-        int time = 0;
+        int depth = 0;
         Queue<int[]> queue = new LinkedList<>();
 
         if(forest[matchR][matchC] != 't'){
             return 0;
         }
         visited[matchR][matchC] = true;
-        queue.add(new int[] {matchR, matchC});
+        queue.add(new int[] {matchR, matchC, depth});
 
         while (!queue.isEmpty()) {
             int rounds = queue.size();
             for (int i = 0; i < rounds; i++) {
                 int[] current = queue.poll();
+                depth = Math.max(current[2], depth);
+                
                 List<int[]> nearby = findAdjacentTrees(forest, visited, current);
+                
                 queue.addAll(nearby);
             }
-            if(!queue.isEmpty()) time++;
+
+            
         }
 
-        return time;
+        return depth;
     }
 
     public static List<int[]> findAdjacentTrees(char[][] forest, boolean[][] visited, int[] current) {
         List<int[]> adjacentTrees = new ArrayList<>();
         int row = current[0];
         int col = current[1];
-       
+        int depth = current[2];
+        
         int[][] directions = {
                 {1, 0},
                 {-1, 0},
@@ -87,7 +92,7 @@ public class Fire {
                 visited[newR][newC] == false &&
                 forest[newR][newC] == 't') {
                     visited[newR][newC] = true;
-                    adjacentTrees.add(new int[] { newR, newC });
+                    adjacentTrees.add(new int[] { newR, newC, depth + 1 });
                    
                 };
             };

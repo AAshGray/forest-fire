@@ -48,6 +48,7 @@ public class Fire {
         Queue<int[]> queue = new LinkedList<>();
         int[] start = {matchR, matchC};
         queue.add(start);
+        visited[matchR][matchC] = true;
 
         while (!queue.isEmpty()) {
             int rounds = queue.size();
@@ -57,8 +58,8 @@ public class Fire {
                 queue.addAll(nearby);
             }
             if(!queue.isEmpty()) time++;
-            System.out.println(time);
-            System.out.println(queue);
+            // System.out.println(time);
+            // System.out.println(queue);
         }
 
         return time;
@@ -85,7 +86,7 @@ public class Fire {
                 newC >= 0 &&  newC < forest[row].length &&
                 visited[newR][newC] == false &&
                 forest[newR][newC] == 't') {
-                    int[] tree = {newR, newC};
+                    int[] tree = {newR, newC };
                     adjacentTrees.add(tree);
                     visited[newR][newC] = true;
                 };
